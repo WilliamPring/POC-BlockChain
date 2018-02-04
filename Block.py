@@ -6,6 +6,7 @@ class Block:
     transactions = ""
     blockHash = ""
     timeStamp = ""
+    curHash = ""
     #Default Constructor to inti values
 
 
@@ -21,10 +22,13 @@ class Block:
     def getTimeStamp(self):
         return self.timeStamp 
 
-    def __init__(self, transactions, timeStamp=None, prevHash=None):
+    def getCurrentHash(self):
+        return self.curHash
+    def __init__(self, transactions, timeStamp=None, prevHash=""):    
         self.prevHash = prevHash
         self.transactions = transactions
         if(timeStamp is None):
             self.timeStamp = datetime.datetime.now()
         else:
             self.timeStamp = timeStamp
+        self.curHash = self.hashBlock()
