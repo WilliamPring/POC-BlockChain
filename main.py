@@ -10,6 +10,7 @@ def main():
     cryptoTulips.addingBlock(Block.Block(transaction[3]))
     cryptoTulips.displayBlockChain()
     print(cryptoTulips.validateBlockChain())
-    
+    cryptoTulips.chain[0].transactions = 2
+    print(cryptoTulips.validateBlockChain())
 if __name__== "__main__":
     main()
