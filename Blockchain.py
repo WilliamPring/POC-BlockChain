@@ -13,13 +13,14 @@ class BlockChain:
         block.prevHash = self.chain[-1].hashBlock()
         #print("The previous hash: " + block.prevHash)
         block.hash = block.hashBlock()
+        
         #print("The current hash:  " + block.hash)
         self.chain.append(block)
     
     def displayBlockChain(self):
         for block in self.chain:
-            print("Time: " + block.getTimeStamp())
+            print("Time: " + str(block.getTimeStamp()))
             print("The Previous Hash: " + block.getPreviousHash())
             print("The Current Hash: " + block.hashBlock())
-            print("The Amount Trans: " + block.getTransaction())
-            print("********")
+            print("The Amount Trans: " + str(block.getTransaction()))
+            print("**************************************************")
