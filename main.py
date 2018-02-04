@@ -10,7 +10,7 @@ def main():
     cryptoTulips.addingBlock(Block.Block(transaction[3]))
     cryptoTulips.displayBlockChain()
     print(cryptoTulips.validateBlockChain())
-    cryptoTulips.chain[1].transactions = 20
+    cryptoTulips.chain[1].transactions = 300
     print(cryptoTulips.validateBlockChain())
 
 if __name__== "__main__":

@@ -7,11 +7,10 @@ class Block:
     blockHash = ""
     timeStamp = ""
     curHash = ""
+    nonce = 0
     #Default Constructor to inti values
-
-
     def hashBlock(self):
-        return hashlib.sha256(str(self.prevHash + str(self.timeStamp) + str(self.transactions)).encode('utf-8')).hexdigest()
+        return hashlib.sha256(str(self.prevHash + str(self.timeStamp) + str(self.transactions)+ str(self.nonce)).encode('utf-8')).hexdigest()
     #Getter
     def getPreviousHash(self):
         return self.prevHash
@@ -24,6 +23,13 @@ class Block:
 
     def getCurrentHash(self):
         return self.curHash
+
+    def miningBlock(self, difficutly):
+        while(self.curHash[:difficutly]!= "0" * difficutly):
+            print(self.curHash[:difficutly])
+            self.nonce +=1
+            self.curHash = self.hashBlock()
+
     def __init__(self, transactions, timeStamp=None, prevHash=""):    
         self.prevHash = prevHash
         self.transactions = transactions

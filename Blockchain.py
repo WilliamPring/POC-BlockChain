@@ -3,18 +3,19 @@ import Block
 
 class BlockChain: 
     chain = []
-
+    difficulty = 0
     def __init__(self):
         #creating a genisis block when initing the BlockChain most of the time its hard coded that the reason
         #we provide a prev hash
         self.chain = [Block.Block("0", "04/02/2018", "0")]
+        self.difficulty = 4
     
     #add a new block to the blockchain
     def addingBlock(self, block): 
         block.prevHash = self.chain[-1].hashBlock()
         #print("The previous hash: " + block.prevHash)
-        block.curHash = block.hashBlock()
-        
+        #block.curHash = block.hashBlock()
+        block.miningBlock(self.difficulty)
         #print("The current hash:  " + block.hash)
         self.chain.append(block)
     
