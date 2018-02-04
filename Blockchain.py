@@ -31,7 +31,7 @@ class BlockChain:
                 print(nextValue.getCurrentHash())
                 print(block.getPreviousHash())
                 print(previousValue.getCurrentHash())
-                if(block.getCurrentHash() != nextValue.getCurrentHash()):
+                if(block.hashBlock() != nextValue.getCurrentHash()):
                     return False
                 if(block.getPreviousHash() != previousValue.getCurrentHash()):
                     return False
