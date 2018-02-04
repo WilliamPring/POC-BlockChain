@@ -1,11 +1,13 @@
 import socket
 
 
-class P2p_base:
+class P2p_client:
     data_size = 1024
     sock = None
     host = None
     port = None
+
+    connected = False
 
     def __init__(self, port, host=None, data_size=1024):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,35 +16,29 @@ class P2p_base:
             self.host = socket.gethostname()
         else:
             self.host = host
+        self.connected = False
         self.data_size = data_size
 
-
-class P2p_client(P2p_base):
-    connected = False
-
-    def __init__(self, port):
-        super().__init__(port)
-
     def connect_to(self, host):
-        super().host = host
+        self.host = host
         if self.connected == True:
             self.close_socket()
-        super().sock.connect((super().host, super().port))
+        self.sock.connect((self.host, self.port))
         self.connected = True
 
     def send_msg(self, data, new_host=None):
         if new_host is not None:
             self.connect_to(new_host)
-        super().sock.send(data)
+        self.sock.send(data.encode())
     
     def recv_msg(self, new_host=None):
         if new_host is not None:
             self.connect_to(new_host)
-        data = super().sock.recv(super().data_size)
+        data = self.sock.recv(self.data_size)
         return data
 
     def close_socket(self):
-        super().sock.close()
+        self.sock.close()
         self.connected = False
 
 
@@ -55,21 +51,36 @@ class P2p_client_pair:
         self.address = addr
 
 
-class P2p_server(P2p_base):
-    def __init__(self, port):
-        super().__init__(port)
-        super().sock.bind((super().host, super().port))
-        super().sock.listen(5)
+class P2p_server:
+    data_size = 1024
+    sock = None
+    host = None
+    port = None
+
+    def __init__(self, port, data_size=1024):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.data_size = data_size
+        self.host = socket.gethostname()
+        self.port = port
+
+        self.sock.bind((self.host, self.port))
+        self.sock.listen(5)
 
     def accept_client(self):
-        client_sock, client_addr = super().sock.accept()
+        client_sock, client_addr = self.sock.accept()
         client_pair = P2p_client_pair(client_sock, client_addr)
+        return client_pair
 
     def send_msg(self, data, client_pair):
-        pass
+        client_pair.socket.send(data.encode())
+
+    def recv_msg(self, client_pair):
+        data = client_pair.socket.recv(self.data_size)
+        return data
 
     def close_socket(self):
-        super().sock.close()
+        self.sock.close()
+
 
 class P2p_entry:
     def __init__(self):
